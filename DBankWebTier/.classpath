@@ -14,5 +14,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/DeutscheBankWebClientConnector"/>
+	<classpathentry kind="lib" path="C:/Users/Graduate/Downloads/mysql-connector-java-5.1.43/mysql-connector-java-5.1.43-bin.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
