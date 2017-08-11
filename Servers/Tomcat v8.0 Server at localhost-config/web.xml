@@ -103,6 +103,17 @@
   <!--                       response sent to clients when directory        -->
   <!--                       listings is enabled? [true]                    -->
 
+<servlet>  
+      <servlet-name>LoginServlet</servlet-name>
+       <servlet-class>com.conn.LoginServlet</servlet-class>
+  </servlet>
+
+<servlet-mapping>
+     <servlet-name>LoginServlet</servlet-name>
+     <url-pattern>/LoginServlet</url-pattern>
+</servlet-mapping>
+
+
     <servlet>
         <servlet-name>default</servlet-name>
         <servlet-class>org.apache.catalina.servlets.DefaultServlet</servlet-class>
@@ -116,6 +127,12 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    
+    <!-- for including new server that is LoginServlet.java -->
+    
+   
+
+
 
 
   <!-- The JSP page compiler and execution servlet, which is the mechanism  -->

@@ -5,6 +5,15 @@
         <dependent-module archiveName="DeutscheBankWebClientConnector.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/DeutscheBankWebClientConnector/DeutscheBankWebClientConnector">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="jackson-databind-2.7.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Graduate/Desktop/jackson-databind-2.7.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jackson-core-2.7.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Graduate/Desktop/jackson-core-2.7.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jackson-annotations-2.7.0.jar" deploy-path="/WEB-INF/lib" handle="module:/classpath/lib/C:/Users/Graduate/Desktop/jackson-annotations-2.7.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="DBankWebTier"/>
         <property name="java-output-path" value="/DBankWebTier/build/classes"/>
     </wb-module>
