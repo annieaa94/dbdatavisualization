@@ -45,16 +45,9 @@ public class LoginServlet extends HttpServlet {
           java.sql.Connection conn = DriverManager.getConnection( "jdbc:mysql://192.168.99.100:3306/db_grad_cs_1917?autoReconnect=true&useSSL=false", "root", "ppp" );
          
           java.sql.Statement smt=conn.createStatement();
-         // System.out.println("bef4");
           ResultSet rs=smt.executeQuery(query);
-          //System.out.println("bef4-1");
-//           lis=new ArrayList<String>();
-//          lis.add(username);
-//          lis.add(password);
          if(rs.next()){
-        	// System.out.println("inside if");
-        	str=username+" "+password;
-        	System.out.println(str);
+        	str=username+" "+password;	
           }
          else{
         	str="Not a Valid Login Details";

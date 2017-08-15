@@ -15,16 +15,19 @@
 <body ng-app="app">
 	<div ng-controller="loginCtrl">
 
+		
+		<div ng-if="ifloggedin==1">
 		<h1>{{dbConnection}}</h1>
-		<div>
 			<form ng-if="connected">
 				Username:<br> <input type="text" name="username"
 					ng-model="username.text"><br> Password:<br> <input
-					type="password" name="password" ng-model="password.text">
-				<button type="button" value="submit" ng-click="login()">
+					type="password" name="password" ng-model="password.text"><br>
+					
+				<button type="button" name="submit" ng-click="login()">Submit</button>
 			</form>
-			<h2>{{msg}}</h2>
+			
 		</div>
+		<h2>{{msg}}</h2>
 	</div>
 	<%
 		

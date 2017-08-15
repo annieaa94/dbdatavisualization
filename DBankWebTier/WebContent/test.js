@@ -9,6 +9,7 @@ app.controller("loginCtrl", function($scope, $http) {
 	$scope.password={};
 	$scope.password.text="";
 	$scope.msg="";
+	$scope.ifloggedin=1;
 	
 		 $http.get("Connection")
 		    .then(function(response) {
@@ -19,9 +20,8 @@ app.controller("loginCtrl", function($scope, $http) {
 		    		$scope.connected = true;
 		    		$scope.dbConnection = "You are to DB Server";
 		    	} else {
-		    		alert("false1");
 		    		$scope.connected = false;
-		    		$scope.dbConnection = "You are 1 not connected to DB Server";
+		    		$scope.dbConnection = "You are not connected to DB Server";
 		    		console.log("false");
 		    	}
 		    		
@@ -35,6 +35,7 @@ app.controller("loginCtrl", function($scope, $http) {
 		 			 params: {"username": $scope.username.text, "password": $scope.password.text}
 		 			}).then(function successCallback(response) {
 		 			   $scope.msg=response.data;
+		 			   $scope.ifloggedin=0;
 		 			  }, function errorCallback(response) {
 		 			    // called asynchronously if an error occurs
 		 			    // or server returns response with an error status.
