@@ -1,4 +1,5 @@
-angular.module('app').controller("loginCtrl",['$scope', '$http', function($scope, $http) {
+angular.module('app').controller("loginCtrl",
+		['$scope', '$http', "LoginService", '$rootScope', function($scope, $http, LoginService, $rootScope) {
 	
 	$scope.dbConnection = "You are not connected to DB Server";
 	$scope.connected = false;
@@ -35,10 +36,15 @@ angular.module('app').controller("loginCtrl",['$scope', '$http', function($scope
 		 			}).then(function successCallback(response) {
 		 				console.log(response);
 		 			   $scope.msg=response;
-		 			   if (response.data === "Not a Valid Login Details")
+		 			   if (response.data === "Not a Valid Login Details") {
 		 				   $scope.loggedIn = 0;
-		 			   else 
+		 			   	   LoginService.setLoginStatus(0);
+		 			   	   $rootScope.$broadcast('loginFail');
+		 			   } else {
 		 				   $scope.loggedIn = 1;
+		 				  LoginService.setLoginStatus(1);
+		 				  $rootScope.$broadcast('loginSuccess', $scope.username.text);
+		 			   }
 		 			  }, function errorCallback(response) {
 		 				  console.log(response);
 		 			    $scope.msg=response.data;
