@@ -2,6 +2,7 @@ package com.conn;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
@@ -54,35 +55,83 @@ public class BAServlet3 extends HttpServlet {
 	}
 
 	protected void validate(HttpServletResponse response) throws IOException {
-		HashMap<String,String> hmBuy=new HashMap<String,String>();
-		HashMap<String,String> hmSell=new HashMap<String,String>();
-		HashMap<String,HashMap<String,String>> data=new HashMap<String,HashMap<String,String>>();
+		ArrayList<HashMap<String,String>> arr=new ArrayList<HashMap<String,String>>();
+		
 		ResultSet rsBuy,rsSell;
 		String st1="";
 		try {
 			//String query="select "+table+"_name from "+table;
-			String buyQuery="select date_format(deal_time,'%y-%m-%d %H:%i') as date , count(*) as buy from deal join instrument on instrument_id=deal_instrument_id where deal_type='B' and instrument_name='"+instrument_name+"'group by date_format(deal_time,'%y-%m-%d %H:%i') order by 1" ;
-			String sellQuery="select date_format(deal_time,'%y-%m-%d %H:%i') as date , count(*) as sell from deal join instrument on instrument_id=deal_instrument_id where deal_type='S' and instrument_name='"+instrument_name+"'group by date_format(deal_time,'%y-%m-%d %H:%i') order by 1" ;
+			String buyQuery="select tm.time_minute, d.deal_amount "+
+"from ( "+
+		"select str_to_date(date_format(deal_time, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i') time_minute "+
+		"from deal "+
+		"where deal_type = 'B' and deal_instrument_id=(select instrument_id from instrument where instrument_name = '"+ instrument_name + "')" +
+		"group by str_to_date(date_format(deal_time, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i') "+
+	") tm "+
+	"join ( "+
+	"	select deal_time, max(deal_id) deal_id "+
+	"	from deal d "+
+    "    where deal_instrument_id = (select instrument_id from instrument where instrument_name = '"+ instrument_name + "')"+
+	"		and deal_type = 'B' "+
+	"	group by deal_time "+
+"	) d1 on d1.deal_id = ( "+
+"		select deal_id "+
+   "     from ( "+
+	"		select deal_time, max(deal_id) deal_id "+
+	"		from deal d "+
+	"		where deal_instrument_id = (select instrument_id from instrument where instrument_name = '"+ instrument_name + "')" +
+	"			and deal_type = 'B' "+
+	"		group by deal_time "+
+	"	) d1 "+
+      "  where d1.deal_time < tm.time_minute + interval 1 minute "+
+      "  order by deal_time desc "+
+       " limit 1 "+
+	") "+
+    "join deal d on d.deal_id = d1.deal_id";
+			String sellQuery="select tm.time_minute, d.deal_amount "+
+					"from ( "+
+					"select str_to_date(date_format(deal_time, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i') time_minute "+
+					"from deal "+
+					"where deal_type = 'S' and deal_instrument_id=(select instrument_id from instrument where instrument_name = '"+ instrument_name + "')" +
+					"group by str_to_date(date_format(deal_time, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i') "+
+				") tm "+
+				"join ( "+
+				"	select deal_time, max(deal_id) deal_id "+
+				"	from deal d "+
+			    "    where deal_instrument_id = (select instrument_id from instrument where instrument_name = '"+ instrument_name + "')" +
+				"		and deal_type = 'S' "+
+				"	group by deal_time "+
+			"	) d1 on d1.deal_id = ( "+
+			"		select deal_id "+
+			   "     from ( "+
+				"		select deal_time, max(deal_id) deal_id "+
+				"		from deal d "+
+				"		where deal_instrument_id = (select instrument_id from instrument where instrument_name = '"+ instrument_name + "')" +
+				"			and deal_type = 'S' "+
+				"		group by deal_time "+
+				"	) d1 "+
+			      "  where d1.deal_time < tm.time_minute + interval 1 minute "+
+			      "  order by deal_time desc "+
+			       " limit 1 "+
+				") "+
+			    "join deal d on d.deal_id = d1.deal_id";
 			
 			//System.out.println(query);
 			rsBuy = smt1.executeQuery(buyQuery);
 			rsSell= smt2.executeQuery(sellQuery);
 			
-			while(rsBuy.next()){
-				hmBuy.put(rsBuy.getString(1),rsBuy.getString(2));
+			while(rsBuy.next() && rsSell.next()){
+				HashMap<String,String> hm=new HashMap<String,String>(); 
+				hm.put("Time",rsBuy.getString(1));
+				hm.put("buy_price", rsBuy.getString(2));
+				hm.put("sell_price", rsSell.getString(2));
+				arr.add(hm);
 			}
-			
-			while(rsSell.next()){
-				hmSell.put(rsSell.getString(1),rsSell.getString(2));
-			}
-			
-			data.put("buy", hmBuy);
-			data.put("sell", hmSell);
 		} catch (SQLException e) {
 			e.printStackTrace();
 			
 		}
-		st1=JsonUtil.converJavaToString(data);
+		st1=JsonUtil.converJavaToString(arr);
 		
 	      response.setContentType("application/json");
 	  	  response.getWriter().write(st1);

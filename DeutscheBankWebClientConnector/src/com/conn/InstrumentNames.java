@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/CounterPartyNames")
-public class CounterPartyNames extends HttpServlet {
+@WebServlet("/InstrumentNames")
+public class InstrumentNames extends HttpServlet {
 
 	/**
 	 * 
@@ -61,19 +61,16 @@ public class CounterPartyNames extends HttpServlet {
 		String st1="";
 		try {
 			//String query="select "+table+"_name from "+table;
-			String Query="select counterparty_name from counterparty" ;
+			String Query="select instrument_name from instrument" ;
 		
 			
 			//System.out.println(query);
 			rs = smt1.executeQuery(Query);
 			while(rs.next()){
 				HashMap<String,String> hm=new HashMap<String,String>();
-				hm.put("Counterparty_name", rs.getString(1));
+				hm.put("Instrument_name", rs.getString(1));
 				arr.add(hm);
 			}
-			HashMap<String,String> hm1=new HashMap<String,String>();
-			hm1.put("Counterparty_name","All");
-			arr.add(hm1);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

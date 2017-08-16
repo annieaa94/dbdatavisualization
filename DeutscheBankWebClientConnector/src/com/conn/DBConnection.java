@@ -30,8 +30,9 @@ public class DBConnection extends HttpServlet
 	      {
 	        Class.forName( "com.mysql.jdbc.Driver" );
 	 
-	        Connection itsConnection = DriverManager.getConnection( "jdbc:mysql://192.168.99.100:3306/db_grad_cs_1917", "root", "ppp" );
-	          str="true";
+	        //Connection itsConnection = DriverManager.getConnection( "jdbc:mysql://199.101.108.157:3306/db_grad_cs_1917", "test-user", "test-user" );
+	        Connection itsConnection = DriverManager.getConnection( "jdbc:mysql://192.168.99.100:3306/db_grad_cs_1917", "root", "ppp" ); 
+	        str="true";
 	       
 	      }
 	      catch( ClassNotFoundException e )

@@ -50,56 +50,146 @@
 
 		</div>
 
-	<div ng-if="connected">
-		<div ng-controller="dataCtrl">
-			<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
-				ng-if="logInStatus == 1"> <a class="navbar-brand"
-				ng-click="setFocus('homeView')">Home</a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarNav" aria-controls="navbarNav"
-				aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-				<ul class="navbar-nav navbar-right">
-					<li class="nav-item"><a class="nav-link"
-						ng-click="setFocus('jsonView')">JSON <span class="sr-only">(current)</span></a></li>
-					<li class="nav-item"><a class="nav-link"
-						ng-click="setFocus('filterView')">Instruments</a></li>
-					<li class="nav-item"><a class="nav-link"
-						ng-click="setFocus('chartView')">Chart</a></li>
-				</ul>
+		<div ng-if="connected">
+			<div ng-controller="dataCtrl">
+				<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+					ng-if="logInStatus == 1"> <a class="navbar-brand"
+					ng-click="setFocus('homeView')">Home</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarNav" aria-controls="navbarNav"
+					aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse justify-content-end"
+					id="navbarNav">
+					<ul class="navbar-nav navbar-right">
+						<li class="nav-item"><a class="nav-link"
+							ng-click="setFocus('jsonView')">JSON <span class="sr-only">(current)</span></a></li>
+						<li class="nav-item"><a class="nav-link"
+							ng-click="setFocus('filterView')">Trades</a></li>
+						<li class="nav-item"><a class="nav-link"
+							ng-click="setFocus('chartView')">Price/Time</a></li>
+						<li class="nav-item"><a class="nav-link"
+							ng-click="setFocus('priceView')">Avg Price</a></li>
+						<li class="nav-item"><a class="nav-link"
+							ng-click="setFocus('tradesView')">Net Trades</a></li>
+						<li class="nav-item"><a class="nav-link"
+							ng-click="setFocus('profit_loss_view')">Profit/Loss</a></li>
+					</ul>
+				</div>
+				</nav>
+				<div ng-if="logInStatus == 1 && selectedView == 'homeView'">
+					<h5>Welcome {{loggedInUser}}!</h5>
+				</div>
+				<div ng-if="logInStatus == 1 && selectedView == 'jsonView'">
+					<h6>{{msg}}</h6>
+				</div>
+				<div ng-if="logInStatus == 1 && selectedView == 'filterView'">
+					Filter Data by counterparty: <select ng-model="selectedFilter"
+						ng-change="changedSelectedFilter(selectedFilter.Counterparty_name)"
+						ng-options="filter.Counterparty_name for filter in filterOptions"></select>
+
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Instrument Name</th>
+								<th>Buys</th>
+								<th>Sells</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in filteredInstrumentData">
+								<td>{{item.instrument_name}}</td>
+								<td>{{item.buy_quantity}}</td>
+								<td>{{item.sell_quantity}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div ng-if="logInStatus == 1 && selectedView == 'chartView'">
+					Filter Data by instrument: <select ng-model="selectedInstrument"
+						ng-change="changedSelectedInstrument(selectedInstrument.Instrument_name)"
+						ng-options="instrument.Instrument_name for instrument in instrumentNames"></select>
+
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Time</th>
+								<th>Buy Price</th>
+								<th>Sell Price</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in filteredPriceData">
+								<td>{{item.Time}}</td>
+								<td>{{item.buy_price}}</td>
+								<td>{{item.sell_price}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+
+				<div ng-if="logInStatus == 1 && selectedView == 'priceView'">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Instrument Name</th>
+								<th>Avg Buy Price</th>
+								<th>Avg Sell Price</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in avgPriceData">
+								<td>{{item.instrument_name}}</td>
+								<td>{{item.buy_quantity}}</td>
+								<td>{{item.sell_quantity}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div ng-if="logInStatus == 1 && selectedView == 'tradesView'">
+					Filter Data by counterparty: <select ng-model="selectedFilter"
+						ng-change="changedSelectedFilterforTradeData(selectedFilter.Counterparty_name)"
+						ng-options="filter.Counterparty_name for filter in filterOptions"></select>
+
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Instrument</th>
+								<th>Net Trades</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in netTradeData">
+								<td>{{item.instrument_name}}</td>
+								<td>{{item.net_trades}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<div ng-if="logInStatus == 1 && selectedView == 'profit_loss_view'">
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th>Counterparty Name</th>
+								<th>Realised Profit/Loss</th>
+								<th>Effective Profit/Loss</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="item in netProfitLossData">
+								<td>{{item.counterparty_name}}</td>
+								<td>{{item.realised}}</td>
+								<td>{{item.effective}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
-			</nav>
-			<div ng-if="logInStatus == 1 && selectedView == 'homeView'">
-				<h5>Welcome {{loggedInUser}}!</h5>
-			</div>
-			<div ng-if="logInStatus == 1 && selectedView == 'jsonView'">
-				<h6>{{msg}}</h6>
-			</div>
-			<div ng-if="logInStatus == 1 && selectedView == 'filterView'">
-				Filter Data by counterparty: <select ng-model="selectedFilter"
-					ng-change="changedSelectedFilter(selectedFilter.Counterparty_name)"
-					ng-options="filter.Counterparty_name for filter in filterOptions"></select>
-					
-				<table class="table table-striped">
-					<thead>
-						<tr>
-							<th>Instrument Name</th>
-							<th>Buys</th>
-							<th>Sells</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="item in filteredInstrumentData">
-							<td>{{item.instrument_name}}</td>
-							<td>{{item.buy_quantity}}</td>
-							<td>{{item.sell_quantity}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
 		</div>
 	</div>
 

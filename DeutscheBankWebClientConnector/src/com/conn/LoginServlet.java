@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
         {
         	//System.out.println("INSIDE try");
           Class.forName( "com.mysql.jdbc.Driver" );
-          java.sql.Connection conn = DriverManager.getConnection( "jdbc:mysql://192.168.99.100:3306/db_grad_cs_1917?autoReconnect=true&useSSL=false", "root", "ppp" );
+          java.sql.Connection conn = DriverManager.getConnection( "jdbc:mysql://192.168.99.100:3306/db_grad_cs_1917", "root", "ppp" );
          
           java.sql.Statement smt=conn.createStatement();
          // System.out.println("bef4");

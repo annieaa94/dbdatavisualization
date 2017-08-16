@@ -11,15 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/BAServlet2")
-public class BAServlet2 extends HttpServlet {
+@WebServlet("/BAServlet4")
+public class BAServlet4 extends HttpServlet {
 
 	/**
 	 * 
 	 */
 	//String query = ""; 
 	private static final long serialVersionUID = 1L;
-	String counter_party_name = "";
 	String url = "jdbc:mysql://192.168.99.100:3306/db_grad_cs_1917";
 	String username = "root";
 	String password = "ppp";
@@ -47,7 +46,6 @@ public class BAServlet2 extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		counter_party_name = request.getParameter("selected_id");
 		
 		validate(response);
 		
@@ -56,21 +54,12 @@ public class BAServlet2 extends HttpServlet {
 
 	protected void validate(HttpServletResponse response) throws IOException {
 		ArrayList<HashMap<String,String>> arr=new ArrayList<HashMap<String,String>>();
-		
 		ResultSet rsBuy,rsSell;
 		String st1="";
-		String buyQuery,sellQuery;
-		if(counter_party_name.equals("All")){
-			 buyQuery="select instrument_name, count(*) as buy from deal join instrument i on i.instrument_id=deal.deal_instrument_id where deal_type='B'  group by instrument_name" ;
-			 sellQuery="select instrument_name, count(*) as sell from deal join instrument i on i.instrument_id=deal.deal_instrument_id where deal_type='S'  group by instrument_name" ;
-		}
-		else{
-			 buyQuery="select i.instrument_name, count(*) as buy from deal d join instrument i on i.instrument_id = d.deal_instrument_id join counterparty c on c.counterparty_id = d.deal_counterparty_id where deal_type='B' and counterparty_name='"+counter_party_name+"' group by i.instrument_name " ;
-			 sellQuery="select i.instrument_name, count(*) as sell from deal d join instrument i on i.instrument_id = d.deal_instrument_id join counterparty c on c.counterparty_id = d.deal_counterparty_id where deal_type='S' and counterparty_name='"+counter_party_name+"' group by i.instrument_name" ;
-		}
 		try {
 			//String query="select "+table+"_name from "+table;
-			
+			String buyQuery="SELECT instrument_name as Instrument,  avg(deal_amount) as AverageBuyPrice from deal join instrument i on i.instrument_id = deal.deal_instrument_id where deal_type = 'B' group by instrument_name" ;
+			String sellQuery="SELECT instrument_name as Instrument,  avg(deal_amount) as AverageSellPrice from deal join instrument i on i.instrument_id = deal.deal_instrument_id where deal_type = 'S' group by instrument_name;" ;
 			
 			//System.out.println(query);
 			rsBuy = smt1.executeQuery(buyQuery);
@@ -87,11 +76,10 @@ public class BAServlet2 extends HttpServlet {
 			e.printStackTrace();
 			
 		}
-			st1=JsonUtil.converJavaToString(arr);
-	
-	      response.setContentType("application/json");
+		 st1=JsonUtil.converJavaToString(arr);
+		 response.setContentType("application/json");
 	  	  response.getWriter().write(st1);
-	  	 
+	  	  
 	}
 
 }
