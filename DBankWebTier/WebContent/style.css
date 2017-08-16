@@ -1,0 +1,15 @@
+.nav-item:hover {
+	cursor: pointer;
+}
+
+.navbar-brand:hover {
+	cursor: pointer;
+}
+
+.navbar-brand {
+	font-size: large;
+}
+
+.navbar .navbar-brand {
+     color: #999;
+}

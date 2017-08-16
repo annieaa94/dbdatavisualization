@@ -9,9 +9,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 <script src="lib/angular.js"></script>
+
 <script src="app.js"></script>
 <script src="login.js"></script>
 <script src="dataview.js"></script>
+
+<link rel="stylesheet" href="style.css">
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -28,6 +31,9 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
 	integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
 	crossorigin="anonymous"></script>
+
+<script src="lib/d3.js"></script>
+
 </head>
 
 <body ng-app="app">
@@ -43,23 +49,25 @@
 			</form>
 
 		</div>
-		
 
+	<div ng-if="connected">
 		<div ng-controller="dataCtrl">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light"
-				ng-if="logInStatus == 1"> <a class="navbar-brand" ng-click="setFocus('homeView')">{{loggedInUser}}</a>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark"
+				ng-if="logInStatus == 1"> <a class="navbar-brand"
+				ng-click="setFocus('homeView')">Home</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarNav" aria-controls="navbarNav"
 				aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav">
-					<li class="nav-item"><a class="nav-link" ng-click="setFocus('jsonView')">JSON <span
-							class="sr-only">(current)</span></a></li>
-					<li class="nav-item"><a class="nav-link" ng-click="setFocus('filterView')">Filter</a></li>
-					<li class="nav-item"><a class="nav-link" ng-click="setFocus('pricingView')">Pricing</a></li>
-					<li class="nav-item"><a class="nav-link" ng-click="setFocus('chartView')">Chart</a></li>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+				<ul class="navbar-nav navbar-right">
+					<li class="nav-item"><a class="nav-link"
+						ng-click="setFocus('jsonView')">JSON <span class="sr-only">(current)</span></a></li>
+					<li class="nav-item"><a class="nav-link"
+						ng-click="setFocus('filterView')">Instruments</a></li>
+					<li class="nav-item"><a class="nav-link"
+						ng-click="setFocus('chartView')">Chart</a></li>
 				</ul>
 			</div>
 			</nav>
@@ -70,13 +78,29 @@
 				<h6>{{msg}}</h6>
 			</div>
 			<div ng-if="logInStatus == 1 && selectedView == 'filterView'">
-				Filter Data by: <select ng-model="selectedFilter"
-					ng-change="changedSelectedFilter(selectedFilter)"
-					ng-options="filter for filter in filterOptions"></select>
-
+				Filter Data by counterparty: <select ng-model="selectedFilter"
+					ng-change="changedSelectedFilter(selectedFilter.Counterparty_name)"
+					ng-options="filter.Counterparty_name for filter in filterOptions"></select>
+					
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Instrument Name</th>
+							<th>Buys</th>
+							<th>Sells</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in filteredInstrumentData">
+							<td>{{item.instrument_name}}</td>
+							<td>{{item.buy_quantity}}</td>
+							<td>{{item.sell_quantity}}</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</div>
-
+		</div>
 	</div>
 
 
