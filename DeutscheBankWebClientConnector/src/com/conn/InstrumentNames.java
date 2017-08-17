@@ -48,7 +48,7 @@ public class InstrumentNames extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		table = request.getParameter("selected_id");
-		System.out.println(table);
+		//System.out.println(table);
 		validate(response);
 		
 

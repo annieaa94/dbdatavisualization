@@ -53,7 +53,7 @@ public class LoginServlet extends HttpServlet {
 //          lis.add(password);
           
          if(rs.next()){
-        	 System.out.println("inside if");
+        	 //System.out.println("inside if");
         	str=username+" "+password;
         	
           }

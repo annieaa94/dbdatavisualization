@@ -25,7 +25,7 @@ public class DBConnection extends HttpServlet
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
 	{
 		String str="";
-    	System.out.println("here");
+    	//System.out.println("here");
 	      try
 	      {
 	        Class.forName( "com.mysql.jdbc.Driver" );
@@ -37,13 +37,13 @@ public class DBConnection extends HttpServlet
 	      }
 	      catch( ClassNotFoundException e )
 	      {
-	    	  System.out.println("classnotfoundexception");
+	    	  //System.out.println("classnotfoundexception");
 	         e.printStackTrace();
 	         str="false";
 	      }
 	      catch( SQLException e )
 	      {
-	    	 System.out.println("sqlexception");
+	    	 //System.out.println("sqlexception");
 	         e.printStackTrace();
 	         str="false";
 	      }

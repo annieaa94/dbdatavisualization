@@ -14,7 +14,7 @@ public class JsonUtil {
 	}
 
 	public static String converJavaToString(Object obj) {
-		System.out.println(obj);
+		//System.out.println(obj);
 		String jsonData = "";
 		try {
 			jsonData = mapper.writeValueAsString(obj);
@@ -22,7 +22,7 @@ public class JsonUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println(jsonData);
+		//System.out.println(jsonData);
 		return jsonData;
 	}
 }

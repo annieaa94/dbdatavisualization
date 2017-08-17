@@ -9,10 +9,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
 <script src="lib/angular.js"></script>
+<script src="lib/d3.js"></script>
 
+<script src="barChartDirective.js"></script>
 <script src="app.js"></script>
 <script src="login.js"></script>
 <script src="dataview.js"></script>
+
 
 <link rel="stylesheet" href="style.css">
 
@@ -37,16 +40,28 @@
 </head>
 
 <body ng-app="app">
+	
 	<div ng-controller="loginCtrl as vm">
-
-		<h1 ng-if="loggedIn == 0">{{dbConnection}}</h1>
+		<div class="overlay" ng-if="loggedIn == 0">
+			<h1 ng-if="loggedIn == 0">{{dbConnection}}</h1>
 		<div ng-if="connected && loggedIn == 0">
-			<form>
-				Username:<br> <input type="text" name="username"
-					ng-model="username.text"><br> Password:<br> <input
-					type="text" name="password" ng-model="password.text">
-				<button type="button" value="submit" ng-click="login()">Submit</button>
+			<div class="container loginContainer">
+			
+			<form class="form-signin">
+				<h2 class="form-signin-heading">Please sign in</h2>
+				<label for="inputUsername" class="sr-only">UserName</label> <input
+					type="username" id="inputUsername" class="form-control"
+					placeholder="Username" required autofocus ng-model="username.text"> <label
+					for="inputPassword" class="sr-only">Password</label> <input
+					type="password" id="inputPassword" class="form-control"
+					placeholder="Password" ng-model="password.text" required>
+				<button class="btn btn-lg btn-primary btn-block" type="submit" ng-click="login()">Sign
+					in</button>
 			</form>
+
+		</div>
+
+		</div>
 
 		</div>
 
@@ -149,7 +164,7 @@
 						</tbody>
 					</table>
 				</div>
-				
+
 				<div ng-if="logInStatus == 1 && selectedView == 'tradesView'">
 					Filter Data by counterparty: <select ng-model="selectedFilter"
 						ng-change="changedSelectedFilterforTradeData(selectedFilter.Counterparty_name)"
@@ -169,8 +184,10 @@
 							</tr>
 						</tbody>
 					</table>
+
+					<bars-chart></bars-chart>
 				</div>
-				
+
 				<div ng-if="logInStatus == 1 && selectedView == 'profit_loss_view'">
 					<table class="table table-striped">
 						<thead>
