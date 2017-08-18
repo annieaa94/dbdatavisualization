@@ -13,5 +13,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Graduate/Downloads/mysql-connector-java-5.1.43/mysql-connector-java-5.1.43-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Graduate/Desktop/jackson-annotations-2.7.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Graduate/Desktop/jackson-databind-2.7.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Graduate/Downloads/jackson-core-2.9.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
